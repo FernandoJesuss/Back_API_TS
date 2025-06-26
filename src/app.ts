@@ -6,7 +6,7 @@ import routes from "./routes";
 
 const app:FastifyInstance = Fastify({
     logger: {
-        level: env.NODE_ENV === "" ? "info" : "error",
+        level: env.NODE_ENV === "dev" ? "info" : "error",
     }
 })
 

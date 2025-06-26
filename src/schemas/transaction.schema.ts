@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ObjectId } from "mongodb";
-import { TransactionType } from '../../generated/prisma'
+import { TransactionType } from "../../generated/prisma";
 
 const isValidObjectId = (id: string): boolean => ObjectId.isValid(id);
 
@@ -11,11 +11,28 @@ export const createTransactionSchema = z.object({
 		errorMap: () => ({ message: "Data iválida" }),
 	}),
 
-    categoryId: z.string().refine (isValidObjectId, {
-        message: "Data Inválida",
-    }),
-    	type: z.enum([TransactionType.expense, TransactionType.income], {
+	categoryId: z.string().refine(isValidObjectId, {
+		message: "Categoria Inválida",
+	}),
+	type: z.enum([TransactionType.expense, TransactionType.income], {
 		errorMap: () => ({ message: "Tipo de transação inválido" }),
-    })
+	}),
 });
 
+export const getTransactionsSchema = z.object({
+	month: z.string().optional(),
+	year: z.string().optional(),
+	type: z
+		.enum([TransactionType.expense, TransactionType.income], {
+			errorMap: () => ({ message: "Data inválida" }),
+		})
+		.optional(),
+	categoryId: z
+		.string()
+		.refine(isValidObjectId, {
+			message: "Categoria Inválida",
+		})
+		.optional(),
+});
+
+export type GetTransactionsQuery = z.infer<typeof getTransactionsSchema>
