@@ -8,6 +8,7 @@ const createTransaction = async (
 
 	if (!userId) {
 		reply.status(401).send({ error: "Usuário não autenticado" });
+		return;
 	}
 };
 
